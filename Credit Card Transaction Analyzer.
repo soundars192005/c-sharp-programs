@@ -1,0 +1,28 @@
+using System;
+
+namespace TransactionAnalyzer
+
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+   
+     
+                string transactionID = "TXN123ABC456";      
+                decimal amount = 1000000.75M;              
+                bool isInternational = true;              
+                decimal customerRating = 4.75M;            
+                DateTime transactionTimestamp = DateTime.Now;
+                int rewardPoints = 500000;                  
+
+                Console.WriteLine("Transaction ID: " + transactionID);
+                Console.WriteLine("Amount: ₹" + amount);
+                Console.WriteLine("Is International: " + isInternational);
+                Console.WriteLine("Customer Rating: " + customerRating);
+                Console.WriteLine("Transaction Timestamp: " + transactionTimestamp);
+                Console.WriteLine("Reward Points: " + rewardPoints);
+            }
+        }
+
+    }
