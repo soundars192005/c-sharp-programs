@@ -1,0 +1,27 @@
+using System;
+
+namespace TemperatureMonitoring
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Temperature Module is starting...");
+            RunTemperatureMonitoring();
+            VibrationModule.RunVibrationMonitoring();
+        }
+
+        public static void RunTemperatureMonitoring()
+        {
+            Console.WriteLine("Running temperature monitoring...");
+        }
+     class VibrationModule
+        {
+            public static void RunVibrationMonitoring()
+            {
+                Console.WriteLine("Running vibration monitoring...");
+
+            }
+        }
+    }
+}
