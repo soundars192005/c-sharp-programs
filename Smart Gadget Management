@@ -1,0 +1,144 @@
+
+using System;
+
+namespace SmartGadgetManagement
+{
+    
+    public class Gadget
+    {
+     
+        private string Brand;
+        private string Model;
+        private DateTime ReleaseDate;
+        private double Price;
+
+  
+        public Gadget(string brand, string model, DateTime releaseDate, double price)
+        {
+            Brand = brand;
+            Model = model;
+            ReleaseDate = releaseDate;
+            Price = price;
+        }
+
+ 
+        public int AgeInYears
+        {
+            get
+            {
+                int age = DateTime.Today.Year - ReleaseDate.Year;
+                if (ReleaseDate.Date > DateTime.Today.AddYears(-age)) age--;
+                return age;
+            }
+        }
+
+        public bool IsWarrantyValid
+        {
+            get
+            {
+                return AgeInYears < 2; 
+            }
+        }
+
+        public double DiscountedPrice
+        {
+            get
+            {
+                double discount = 0;
+                if (AgeInYears > 3) discount = 0.12;
+                else if (AgeInYears > 1) discount = 0.05;
+                return Price * (1 - discount);
+            }
+        }
+
+        public string UniqueCode
+        {
+            get
+            {
+                string brandPart = Brand.Length >= 3 ? Brand.Substring(0, 3).ToLower() : Brand.ToLower();
+                string modelPart = Model.Length >= 2 ? Model.Substring(Model.Length - 2, 2).ToLower() : Model.ToLower();
+                string yearPart = ReleaseDate.ToString("yy"); 
+                return brandPart + modelPart + yearPart;
+            }
+        }
+
+      
+        public void DisplayGadgetInfo()
+        {
+            Console.WriteLine($"Brand: {Brand}");
+            Console.WriteLine($"Model: {Model}");
+            Console.WriteLine($"AgeInYears: {AgeInYears}");
+            Console.WriteLine($"IsWarrantyValid: {IsWarrantyValid}");
+            Console.WriteLine($"DiscountedPrice: {DiscountedPrice:C}");
+            Console.WriteLine($"UniqueCode: {UniqueCode}");
+        }
+    }
+
+  
+    public class Smartphone : Gadget
+    {
+        public int RAM { get; set; } 
+        public int Storage { get; set; } 
+        public double CameraMP { get; set; }
+
+        public Smartphone(string brand, string model, DateTime releaseDate, double price,
+                          int ram, int storage, double cameraMP)
+            : base(brand, model, releaseDate, price)
+        {
+            RAM = ram;
+            Storage = storage;
+            CameraMP = cameraMP;
+        }
+
+        public void DisplaySmartphoneInfo()
+        {
+            DisplayGadgetInfo();
+            Console.WriteLine($"RAM: {RAM} GB");
+            Console.WriteLine($"Storage: {Storage} GB");
+            Console.WriteLine($"Camera: {CameraMP} MP\n");
+        }
+    }
+
+    
+    public class Laptop : Gadget
+    {
+        public int RAM { get; set; } 
+        public string Processor { get; set; }
+        public double BatteryBackupHours { get; set; }
+
+        public Laptop(string brand, string model, DateTime releaseDate, double price,
+                      int ram, string processor, double batteryBackupHours)
+            : base(brand, model, releaseDate, price)
+        {
+            RAM = ram;
+            Processor = processor;
+            BatteryBackupHours = batteryBackupHours;
+        }
+
+        public void DisplayLaptopInfo()
+        {
+            DisplayGadgetInfo();
+            Console.WriteLine($"RAM: {RAM} GB");
+            Console.WriteLine($"Processor: {Processor}");
+            Console.WriteLine($"Battery Backup: {BatteryBackupHours} hours\n");
+        }
+    }
+
+  
+    class Program
+    {
+        static void Main(string[] args)
+        {
+          
+            Smartphone phone = new Smartphone("Samsung", "GalaxyS21", new DateTime(2020, 2, 15), 800, 8, 128, 64);
+            Console.WriteLine("Smartphone Details:");
+            phone.DisplaySmartphoneInfo();
+
+          
+            Laptop laptop = new Laptop("Dell", "XPS15", new DateTime(2019, 6, 10), 1500, 16, "Intel i7", 10);
+            Console.WriteLine("Laptop Details:");
+            laptop.DisplayLaptopInfo();
+        }
+    }
+}
+
