@@ -1,0 +1,89 @@
+using System;
+using System.Collections;
+
+namespace EmployeeManagement
+{
+    public class Employee
+    {
+        public string EmployeeName { get; set; }
+        public int EmployeeID { get; set; }
+        public double Salary { get; set; }
+
+        public Employee(int id, string name, double salary)
+        {
+            EmployeeID = id;
+            EmployeeName = name;
+            Salary = salary;
+        }
+    }
+
+    public class EmployeeDAL
+    {
+        private ArrayList employees = new ArrayList();
+
+        public bool AddEmployee(Employee e)
+        {
+            if (e == null)
+                return false;
+
+            employees.Add(e);
+            return true;
+        }
+
+        public bool DeleteEmployee(int id)
+        {
+            for (int i = 0; i < employees.Count; i++)
+            {
+                Employee emp = (Employee)employees[i];
+                if (emp.EmployeeID == id)
+                {
+                    employees.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public string SearchEmployee(int id)
+        {
+            foreach (Employee emp in employees)
+            {
+                if (emp.EmployeeID == id)
+                    return emp.EmployeeName;
+            }
+            return null;
+        }
+
+        public Employee[] GetAll()
+        {
+            Employee[] empArray = new Employee[employees.Count];
+            employees.CopyTo(empArray);
+            return empArray;
+        }
+    }
+
+ 
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            EmployeeDAL dal = new EmployeeDAL();
+
+            dal.AddEmployee(new Employee(1, "Anton", 50000));
+            dal.AddEmployee(new Employee(2, "Vijay", 60000));
+            dal.AddEmployee(new Employee(3, "Arun", 55000));
+
+            Console.WriteLine("Search ID 2: " + dal.SearchEmployee(2));
+
+            dal.DeleteEmployee(1);
+
+            Console.WriteLine("\nEmployee List:");
+            foreach (Employee e in dal.GetAll())
+            {
+                Console.WriteLine($"ID: {e.EmployeeID}, Name: {e.EmployeeName}, Salary: {e.Salary}");
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
