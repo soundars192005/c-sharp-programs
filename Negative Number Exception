@@ -1,0 +1,95 @@
+using System;
+using System.Text.RegularExpressions;
+public class NegativeNumberException : Exception
+{
+    public NegativeNumberException(string message) : base(message)
+    {
+    }
+}
+public class Person
+{
+    private string firstName;
+    private string lastName;
+
+    public string FirstName
+    {
+        get { return firstName; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new Exception("First Name should not be empty");
+
+            if (!Regex.IsMatch(value, "^[A-Za-z]+$"))
+                throw new Exception("First Name should contain only alphabets");
+
+            firstName = value;
+        }
+    }
+    public string LastName
+    {
+        get { return lastName; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new Exception("Last Name should not be empty");
+
+            if (!Regex.IsMatch(value, "^[A-Za-z]+$"))
+                throw new Exception("Last Name should contain only alphabets");
+
+            lastName = value;
+        }
+    }
+}
+class Program
+{
+   static void Main()
+    {
+        try
+        {
+            Person p = new Person();
+
+            Console.Write("Enter First Name: ");
+            p.FirstName = Console.ReadLine();
+
+            Console.Write("Enter Last Name: ");
+            p.LastName = Console.ReadLine();
+
+            int[] marks = new int[3];
+
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Write($"Enter marks for subject {i + 1}: ");
+                marks[i] = int.Parse(Console.ReadLine());
+
+                if (marks[i] < 0)
+                    throw new NegativeNumberException("Marks cannot be negative");
+            }
+
+            Console.WriteLine("\nStudent Details");
+            Console.WriteLine($"Name: {p.FirstName} {p.LastName}");
+            Console.WriteLine("Marks:");
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine($"Subject {i + 1}: {marks[i]}");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("FormatException: Please enter only integer values for marks");
+        }
+        catch (NegativeNumberException ex)
+        {
+            Console.WriteLine("Custom Exception: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            Console.WriteLine("\nProgram execution completed");
+        }
+    }
+}
+
+
