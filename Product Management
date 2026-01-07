@@ -1,0 +1,91 @@
+ using System;
+using System.Collections;
+
+namespace ProductManagement
+{
+   
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public int ProductID { get; set; }
+        public double Price { get; set; }
+
+        public Product(int id, string name, double price)
+        {
+            ProductID = id;
+            ProductName = name;
+            Price = price;
+        }
+    }
+
+ 
+    public class ProductStackDAL
+    {
+       
+        private Stack products = new Stack();
+
+     
+        public bool PushProduct(Product p)
+        {
+            if (p == null)
+                return false;
+
+            products.Push(p);
+            return true;
+        }
+
+       
+        public bool PopProduct()
+        {
+            if (products.Count == 0)
+                return false;
+
+            products.Pop();
+            return true;
+        }
+
+       
+        public double SearchProduct(int id)
+        {
+            foreach (Product p in products)
+            {
+                if (p.ProductID == id)
+                {
+                    return p.Price;
+                }
+            }
+            return -1;
+        }
+
+       
+        public Product[] GetAllProducts()
+        {
+            Product[] productArray = new Product[products.Count];
+            products.CopyTo(productArray, 0);
+            return productArray;
+        }
+    }
+
+   
+    class Program
+    {
+        static void Main()
+        {
+            ProductStackDAL dal = new ProductStackDAL();
+
+            dal.PushProduct(new Product(101, "Laptop", 55000));
+            dal.PushProduct(new Product(102, "Mobile", 25000));
+
+            Console.WriteLine(dal.SearchProduct(101));
+
+            Product[] allProducts = dal.GetAllProducts();
+            foreach (Product p in allProducts)
+            {
+                Console.WriteLine($"{p.ProductID} {p.ProductName} {p.Price}");
+            }
+
+            dal.PopProduct();
+        }
+    }
+}
+
